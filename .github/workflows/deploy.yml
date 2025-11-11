@@ -1,16 +1,10 @@
-- name: Upload files via FTPS (implicit 990)
-  uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+- name: Upload via SFTP
+  uses: wlixcc/SFTP-Deploy-Action@v1.2.4
   with:
     server: dev.screencraft.net.au
-    protocol: ftps        # FTPS
-    port: 990             # 👈 implicit FTPS
-    security: loose       # 👈 helps if the server's TLS cert is non-standard
-    username: ${{ secrets.FTP_USERNAME }}
-    password: ${{ secrets.FTP_PASSWORD }}
-    local-dir: ./
-    server-dir: /a/reyesmar/
-    exclude: |
-      **/.git*
-      **/node_modules/**
-      **/.github/**
-    log-level: standard
+    port: 22
+    username: ${{ secrets.SFTP_USERNAME }}
+    password: ${{ secrets.SFTP_PASSWORD }}   # or use ssh_private_key
+    local_path: ./
+    remote_path: /a/reyesmar/
+    exclude: ".git*,node_modules/**,.github/**"
