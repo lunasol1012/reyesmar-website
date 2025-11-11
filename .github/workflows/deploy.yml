@@ -1,29 +1,15 @@
-name: Deploy via FTPS
-
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      - name: Upload files via FTPS
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: dev.screencraft.net.au
-          protocol: ftps           # 👈 Enables secure FTP (TLS)
-          port: 21                 # 👈 FTPS typically uses port 21
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./            # upload everything from the root
-          server-dir: /a/reyesmar/ # your Screencraft site directory
-          exclude: |
-            **/.git*
-            **/node_modules/**
-            **/.github/**
-          log-level: standard
+- name: Upload files via FTPS (explicit 21)
+  uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+  with:
+    server: dev.screencraft.net.au
+    protocol: ftps
+    port: 21
+    security: loose       # 👈 add this
+    username: ${{ secrets.FTP_USERNAME }}
+    password: ${{ secrets.FTP_PASSWORD }}
+    local-dir: ./
+    server-dir: /a/reyesmar/
+    exclude: |
+      **/.git*
+      **/node_modules/**
+      **/.github/**
