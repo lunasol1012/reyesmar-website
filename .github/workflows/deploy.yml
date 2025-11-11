@@ -12,13 +12,13 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Upload files via FTPS (explicit 21)
+      - name: Upload files via FTPS (implicit 990)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: dev.screencraft.net.au
           protocol: ftps
-          port: 21                 # explicit FTPS
-          security: loose
+          port: 990                # implicit FTPS
+          security: loose          # relax TLS checks if needed
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./
