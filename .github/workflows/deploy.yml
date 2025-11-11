@@ -1,10 +1,30 @@
-- name: Upload via SFTP
-  uses: wlixcc/SFTP-Deploy-Action@v1.2.4
-  with:
-    server: dev.screencraft.net.au
-    port: 22
-    username: ${{ secrets.SFTP_USERNAME }}
-    password: ${{ secrets.SFTP_PASSWORD }}   # or use ssh_private_key
-    local_path: ./
-    remote_path: /a/reyesmar/
-    exclude: ".git*,node_modules/**,.github/**"
+name: Deploy via FTPS
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Upload files via FTPS (explicit 21)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: dev.screencraft.net.au
+          protocol: ftps
+          port: 21                 # explicit FTPS
+          security: loose
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          server-dir: /a/reyesmar/
+          exclude: |
+            **/.git*
+            **/node_modules/**
+            **/.github/**
+          log-level: standard
